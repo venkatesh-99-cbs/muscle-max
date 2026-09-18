@@ -40,3 +40,19 @@ class IsOwnerOrAdmin(BasePermission):
         owner = getattr(obj, "user", None)
         return owner == request.user
 
+
+class IsAdminOrReadOnly(BasePermission):
+    """
+    Allows read-only access to anyone (public/safe methods),
+    but restricts write operations to admin users.
+    """
+
+    def has_permission(self, request, view):
+        if request.method in ("GET", "HEAD", "OPTIONS"):
+            return True
+        return bool(
+            request.user
+            and request.user.is_authenticated
+            and getattr(request.user, "is_admin_role", False)
+        )
+
