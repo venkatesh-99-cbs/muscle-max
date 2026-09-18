@@ -21,3 +21,4 @@ npm-debug.log*
 *.log
 .vscode/
 .idea/
+backend/db_backup.json
